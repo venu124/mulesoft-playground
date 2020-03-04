@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="d07c68da-83b8-4450-bd6f-06c9e84417c9" basePath="api" >
+		<http:listener-connection host="0.0.0.0" port="8091" />
+	</http:listener-config>
+	<configuration-properties doc:name="Configuration properties" doc:id="0ccb033e-d1e2-49a6-806f-12374b2ed9d7" file="common.properties" />
+	<flow name="mulesoft-playgroundFlow" doc:id="93b2371c-f05d-4f78-bea9-bc9445d4cb8c" >
+		<http:listener doc:name="Listener" doc:id="f17b4bfa-881a-47cd-a110-88ddb8b16a4c" config-ref="HTTP_Listener_config" path="status"/>
+		<logger level="INFO" doc:name="Logger" doc:id="590d74a6-c230-48f3-ac29-a53a0bf84a48" />
+		<ee:transform doc:name="Transform Message" doc:id="3591c1df-231d-46b3-b0a7-418b69acdcdb" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+{
+	"message": "hello world"
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<logger level="INFO" doc:name="Logger" doc:id="715a3cfc-c3a8-4ed7-88ed-7b17dced3bde" />
+	</flow>
+</mule>
